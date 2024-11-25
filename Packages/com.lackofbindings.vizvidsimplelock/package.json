@@ -1,0 +1,20 @@
+{
+    "name": "com.lackofbindings.vizvidsimplelock",
+    "displayName": "VizVid Simple Lock",
+    "description": "A simple lock for the VizVid video player system.",
+    "version": "1.0.0",
+    "unity": "2022.3",
+    "author": {
+      "name": "lackofbindings",
+      "url": "https://github.com/lackofbindings"
+    },
+    "legacyFolders": {
+      "Assets\\VizVid Lock" : "4deb48bf134a26a4f8c058d036e958f1"
+    },
+    "legacyFiles": {},
+    "gitDependencies": {},
+    "vpmDependencies": {
+      "com.vrchat.worlds": "3.x.x",
+      "idv.jlchntoz.vvmw": "^1.2.0"
+    }
+  }

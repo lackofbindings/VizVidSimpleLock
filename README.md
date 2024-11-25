@@ -32,7 +32,7 @@ These should be installed automatically by the VCC when you add this package to 
 	
 3. Fill out the `Playlist Queue Handler` field on the Lock object by dragging in the one from your VizVid instance.
 
-### Usage
+## Usage
 
 - While unlocked, any player can click the lock to lock the controls to them.
 - While locked, the lock displays the name of the user that has control (the owner).

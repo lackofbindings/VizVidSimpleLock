@@ -5,19 +5,18 @@ using UnityEngine;
 using UnityEngine.UI;
 using VRC.SDKBase;
 using VRC.Udon;
+using JLChnToZ.VRC.Foundation;
 
 namespace JLChnToZ.VRC.VVMW
 {
     [UdonBehaviourSyncMode(BehaviourSyncMode.Manual)]
     [DisallowMultipleComponent]
-    public class VizVidLock : UdonSharpBehaviour
+    public class VizVidLockManager : UdonSharpBehaviour
     {
-        public FrontendHandler PlaylistQueueHandler;
+        [Locatable] public FrontendHandler PlaylistQueueHandler;
         [UdonSynced] public bool isLocked = false;
         private bool wantToLock = false;
-        public Text label;
-        public GameObject lockedUI;
-        public GameObject unlockedUI;
+        public VizVidLockButton[] lockButtons;
 
         void Start()
         {
@@ -27,11 +26,16 @@ namespace JLChnToZ.VRC.VVMW
 
         public override void Interact()
         {
-            // UnityEngine.Debug.Log("[VizVid Lock] Interact, Owner: " + Networking.GetOwner(this.gameObject).displayName);
+            Toggle();
+        }
+
+        public void Toggle()
+        {
+            UnityEngine.Debug.Log("[VizVid Lock] Interact, Owner: " + Networking.GetOwner(this.gameObject).displayName);
             if (Networking.IsOwner(Networking.LocalPlayer, this.gameObject))
             {
                 // If we are already the owner then we can toggle the lock normally
-                // UnityEngine.Debug.Log("[VizVid Lock] is owner, Locked: " + isLocked);
+                UnityEngine.Debug.Log("[VizVid Lock] Owner has toggled, Locked: " + isLocked);
                 isLocked = !isLocked;
                 RequestSerialization();
                 UpdateUI();
@@ -40,6 +44,7 @@ namespace JLChnToZ.VRC.VVMW
             else if (!isLocked || Networking.LocalPlayer.isInstanceOwner)
             {
                 // Remember that we are trying to lock and then request ownership
+                UnityEngine.Debug.Log("[VizVid Lock] Requesting ownership, wantToLock: " + wantToLock);
                 wantToLock = true;
                 Networking.SetOwner(Networking.LocalPlayer, this.gameObject);
             }
@@ -73,13 +78,24 @@ namespace JLChnToZ.VRC.VVMW
 
         private void UpdateUI()
         {
-            // Update lock UI state
-            lockedUI.SetActive(isLocked);
-            unlockedUI.SetActive(!isLocked);
-            // Check current owner
             VRCPlayerApi currentOwner = Networking.GetOwner(this.gameObject);
-            // Display who the current owner is (if locked)
-            label.text = (isLocked && Utilities.IsValid(currentOwner)) ? currentOwner.displayName : "";
+            bool isOwnerValid = Utilities.IsValid(currentOwner);
+
+            // Update each button
+            foreach (VizVidLockButton button in lockButtons)
+            {
+                // Let each button know what the lock state is
+                button.isLocked = isLocked;
+
+                // Let each button know who the current owner is
+                if (isOwnerValid)
+                {
+                    button.currentOwnerId = currentOwner.playerId;
+                }
+
+                // Ask each button to update
+                button.UpdateUI();
+            }
 
         }
 

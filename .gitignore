@@ -63,3 +63,6 @@ crashlytics-build.properties
 Assets/PackageMakerWindowData.asset*
 .idea
 .vscode
+
+# Layout changes (currently selected object, etc.)
+[Uu]serSettings/Layouts/*

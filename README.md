@@ -1,5 +1,7 @@
 # VizVid Simple Lock
 
+<img src="docs/resources/preview.jpg" width="512" />
+
 An unofficial add-on for the VRChat VizVid video player system that adds a simple lock button. It interacts with the `Lock` and `OnUnlock` events exposed by VizVid's `Playlist Queue Handler`.
 
 ## Setup
